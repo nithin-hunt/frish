@@ -22,8 +22,6 @@ jobs:
           
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        env:
-          BUNDLE_GEMFILE: ./kamal/Gemfile
         with:
           ruby-version: 3.3.1
           bundler-cache: true
@@ -47,7 +45,6 @@ jobs:
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DOCKER_BUILDKIT: 1
-          BUNDLE_GEMFILE: ./kamal/Gemfile
         run: |
           ./bin/kamal envify
 
