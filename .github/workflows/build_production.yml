@@ -40,13 +40,30 @@ jobs:
           mask-aws-account-id  : 'no'
       - name: Login to Amazon ECR
         id  : login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'true'
 
       - name: Install Kamal
         run: gem install kamal -v 1.5.2
+      
+      - name: Kamal Envify
+        shell: bash
+        id  : kamal-envify
+        env :
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
+        run: |
+          kamal envify --destination=production
 
       - name: Kamal Deploy
+        shell: bash
         id: kamal-deploy
         run: kamal deploy
         env :
-          KAMAL_REGISTRY_PASSWORD: "${ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }"
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
+
+      - name: Kamal Release
+        shell: bash
+        if: ${{ cancelled() }}
+        run: |
+          kamal lock release --destination=production
