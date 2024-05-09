@@ -48,7 +48,7 @@ jobs:
       - name: Kamal Envify
         id  : kamal-envify
         env :
-          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
+          KAMAL_REGISTRY_PASSWORD: ${ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }
         run: kamal env push
 
       - name: Kamal Deploy
