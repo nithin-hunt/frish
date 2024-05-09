@@ -1,0 +1,63 @@
+name: Kamal
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  spec:
+    uses: ./.github/workflows/specs.yml
+  lint:
+    uses: ./.github/workflows/lint_code.yml
+
+  build_and_deploy:
+    needs: [spec, lint]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      image: ${{ steps.build.outputs.image }}
+
+    env:
+      RAILS_ENV: production
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: ./kamal/Gemfile
+        with:
+          ruby-version: 3.3.1
+          bundler-cache: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region           : ap-south-1
+          mask-aws-account-id  : 'no'
+      - name: Login to Amazon ECR
+        id  : login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Kamal Envify
+        id  : kamal-envify
+        env :
+          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          DOCKER_BUILDKIT: 1
+          BUNDLE_GEMFILE: ./kamal/Gemfile
+        run: |
+          ./bin/kamal envify
+
+      - name: Kamal Deploy
+        id: kamal-deploy
+        run: |
+          ./bin/kamal deploy
