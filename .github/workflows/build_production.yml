@@ -39,16 +39,18 @@ jobs:
       - name: Login to Amazon ECR
         id  : login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Install Kamal
+        run: gem install kamal -v 1.5.2
+
       - name: Kamal Envify
         id  : kamal-envify
         env :
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DOCKER_BUILDKIT: 1
-        run: |
-          kamal envify
+        run: kamal envify
 
       - name: Kamal Deploy
         id: kamal-deploy
-        run: |
-          kamal deploy
+        run: kamal deploy
