@@ -15,6 +15,8 @@ registry:
     - KAMAL_REGISTRY_PASSWORD
 
 env:
+  clear:
+    RAILS_ENV: production
   secret:
     - RAILS_MASTER_KEY
 

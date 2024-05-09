@@ -13,7 +13,9 @@ jobs:
       image: ${{ steps.build.outputs.image }}
 
     env:
+      DOCKER_BUILDKIT: 1
       RAILS_ENV: production
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -47,8 +49,7 @@ jobs:
         id  : kamal-envify
         env :
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          DOCKER_BUILDKIT: 1
+        run: kamal envify 
         run: kamal env push
 
       - name: Kamal Deploy
