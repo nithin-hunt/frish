@@ -11,8 +11,7 @@ servers:
 registry:
   server: 590184052210.dkr.ecr.ap-south-1.amazonaws.com
   username: AWS
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+  password: <%= %x(aws ecr get-login-password) %>
 
 env:
   clear:
