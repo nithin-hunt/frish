@@ -54,7 +54,9 @@ jobs:
       - name: Kamal Deploy
         shell: bash
         id: kamal-deploy
-        run: ./bin/kamal deploy
+        run: |
+          ./bin/kamal lock release
+          ./bin/kamal deploy
 
       - name: Kamal Release
         shell: bash
