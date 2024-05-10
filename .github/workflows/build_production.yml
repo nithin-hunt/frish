@@ -37,7 +37,8 @@ jobs:
           aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region           : ap-south-1
-          mask-aws-account-id  : 'no'
+          mask-aws-account-id  : 'true'
+
       - name: Login to Amazon ECR
         id  : login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -53,17 +54,15 @@ jobs:
         env :
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
         run: |
-          kamal envify --destination=production
+          kamal envify
 
       - name: Kamal Deploy
         shell: bash
         id: kamal-deploy
         run: kamal deploy
-        env :
-          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
 
       - name: Kamal Release
         shell: bash
         if: ${{ cancelled() }}
         run: |
-          kamal lock release --destination=production
+          kamal lock release
