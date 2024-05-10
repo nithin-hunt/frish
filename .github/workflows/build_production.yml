@@ -59,5 +59,4 @@ jobs:
       - name: Kamal Release
         shell: bash
         if: ${{ cancelled() }}
-        run: |
-          kamal lock release
+        run: ./bin/kamal lock release
