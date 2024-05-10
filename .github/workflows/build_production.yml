@@ -47,12 +47,12 @@ jobs:
         with:
           mask-password: 'true'
       
-      - name: Kamal Envify
-        shell: bash
-        id  : kamal-envify
-        env :
-          KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
-        run: ./bin/kamal envify
+      # - name: Kamal Envify
+      #   shell: bash
+      #   id  : kamal-envify
+      #   env :
+      #     KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
+      #   run: ./bin/kamal envify
 
       - name: Kamal Deploy
         shell: bash
