@@ -52,15 +52,15 @@ jobs:
         id  : kamal-envify
         env :
           KAMAL_REGISTRY_PASSWORD: ${{ steps.login-ecr.outputs.docker_password_590184052210_dkr_ecr_ap-south-1_amazonaws_com }}
-        run: ./bin/kamal envify --destination=production
+        run: ./bin/kamal envify
 
       - name: Kamal Deploy
         shell: bash
         id: kamal-deploy
-        run: ./bin/kamal deploy --destination=production
+        run: ./bin/kamal deploy
 
       - name: Kamal Release
         shell: bash
         if: ${{ cancelled() }}
         run: |
-          kamal lock release --destination=production
+          kamal lock release
