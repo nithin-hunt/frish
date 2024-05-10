@@ -27,8 +27,8 @@ builder:
   args:
     RUBY_VERSION: 3.3.1
     RAILS_ENV: production
-      NODE_VERSION: 22.1.0
-      YARN_VERSION: 1.22.19
+    NODE_VERSION: 22.1.0
+    YARN_VERSION: 1.22.19
   multiarch: false
   cache:
     type: registry
