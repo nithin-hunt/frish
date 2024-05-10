@@ -55,7 +55,6 @@ jobs:
         shell: bash
         id: kamal-deploy
         run: |
-          ./bin/kamal lock release
           ./bin/kamal deploy
 
       - name: Kamal Release
