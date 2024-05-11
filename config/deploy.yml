@@ -30,6 +30,13 @@ builder:
     YARN_VERSION: 1.22.19
   multiarch: false
   
+traefik:
+  env:
+    - TRAEFIK_LOG_LEVEL=DEBUG
+  files:
+    - traefik/traefik.yml:/etc/traefik/traefik.yml
+    - traefik/traefik.env:/etc/traefik/traefik.env
+    
 accessories:
   db:
     image: postgres:16.0
