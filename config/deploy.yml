@@ -30,10 +30,16 @@ builder:
     YARN_VERSION: 1.22.19
   multiarch: false
   
-# accessories:
-#   db:
-#     image: postgres:16.0
-#     host: 35.154.124.179
-#     port: 5432
-#     directories:
-#       - data:/var/lib/postgresql/data
+accessories:
+  db:
+    image: postgres:16.0
+    host: 35.154.124.179
+    port: 5432
+    env:
+      clear:
+        POSTGRES_USER: "frish"
+        POSTGRES_DB: 'frish_production'
+    files:
+      - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
+    directories:
+      - data:/var/lib/postgresql/data
