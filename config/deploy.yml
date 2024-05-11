@@ -32,10 +32,15 @@ builder:
   
 traefik:
   args:
+    accesslog: true
+    accesslog.format: json
     log.level: DEBUG
   files:
     - traefik/traefik.yml:/etc/traefik/traefik.yml
     - traefik/traefik.env:/etc/traefik/traefik.env
+  options:
+    volume:
+      - /tmp/example.json:/tmp/example.json
 
 accessories:
   db:
