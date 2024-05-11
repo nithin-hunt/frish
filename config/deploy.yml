@@ -37,7 +37,5 @@ accessories:
       clear:
         POSTGRES_USER: "frish"
         POSTGRES_DB: 'frish_production'
-    files:
-      - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/lib/postgresql/data
